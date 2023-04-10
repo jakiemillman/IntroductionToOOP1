@@ -58,9 +58,18 @@ public:
 	}
 	Fraction(double number)
 	{
+		int i = 0;
 		this->integer = number;
 		number-=integer;
-		this->denominator = 1000000000;
+		number += 1e-10;
+		/*while ((int)number != number)
+		{
+			number *= 10;
+			i++;
+		}
+		this->numerator = number;
+		this->denominator = pow(10, i);*/
+		this->denominator = 1e+9;
 		this->numerator = number *denominator;
 		reduce();
 		cout << "1ArgConstructor:\t" << this << endl;
@@ -362,4 +371,15 @@ void main()
 	/*cout << A << endl;*/
 	Fraction B = 2.57;
 	cout << B;
+	/*double a = 0.57;
+	int b = 10;
+	int i = 0;
+	while ((int)a != a)
+	{
+		a *= 10;
+		i++;
+	}
+	
+	cout << a<<" "<<pow(b,i);
+	if (a == b)cout << 1;*/
 }
