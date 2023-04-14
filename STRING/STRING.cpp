@@ -11,24 +11,24 @@ class String
     int size; //размер строки
 public:
     //Constructors
-    explicit String(int size=256)
+    explicit String(int size=256):size(size),str(new char[size] {})
     {
-        this->size = size;
-        this->str = new char[size] {};
+        //this->size = size;
+        //this->str = new char[size] {};
         cout << "Default1ArgConstructor:\t" << this << endl;
     }
-    String(const char* str)
+    String(const char* str):size(strlen(str) + 1), str(new char[size] {})
     {
-        this->size = strlen(str)+1;
-        this->str = new char[size] {};
+        /*this->size = strlen(str)+1;
+        this->str = new char[size] {};*/
         for (int i = 0; i < size; i++)this->str[i] = str[i];
         cout << "Default1ArgConstructor1:\t" << this << endl;
     }
-    String(const String& other)
+    String(const String& other):size(other.size),str(new char [size] {})
     {
         //deep copy
-        this->size = other.size;
-        this->str = new char [size]{};
+        /*this->size = other.size;
+        this->str = new char [size]{};*/
         for (int i = 0; i < this->size; i++) this->str[i] = other.str[i];
         cout << "CopyConstructor:\t" << this << endl;
     }
@@ -113,11 +113,9 @@ std::ostream& operator<<(std::ostream& os, String& obj)
 }
 std::istream& operator>>(std::istream& is, String& obj)
 {
-    const int SIZE = 256;
+    const int SIZE = 1024000;
     char buffer[SIZE] = {};
-    SetConsoleCP(1251);
-    is.getline(buffer,SIZE);
-    SetConsoleCP(866);
+    is>>buffer;
     obj=buffer;
     return is;
 }
