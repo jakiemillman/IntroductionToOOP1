@@ -11,90 +11,98 @@ class String
     int size; //размер строки
 public:
     //Constructors
-    explicit String(int size=256):size(size),str(new char[size] {})
-    {
-        //this->size = size;
-        //this->str = new char[size] {};
-        cout << "Default1ArgConstructor:\t" << this << endl;
-    }
-    String(const char* str):String(strlen(str)+1)
-    {
-        /*this->size = strlen(str)+1;
-        this->str = new char[size] {};*/
-        for (int i = 0; i < size; i++)this->str[i] = str[i];
-        cout << "Default1ArgConstructor1:\t" << this << endl;
-    }
-    String(const String& other):String(other.str)
-    {
-        //deep copy
-        /*this->size = other.size;
-        this->str = new char [size]{};*/
-        //for (int i = 0; i < this->size; i++) this->str[i] = other.str[i];
-        cout << "CopyConstructor:\t" << this << endl;
-    }
-    String(String&& other)
-    {
-        //shalow copy
-        this->size = other.size;
-        this->str = other.str;
-        other.size = NULL;
-        other.str = nullptr;
-        cout << "MoveConstructor:\t" << this << endl;
-
-    }
-    
-    ~String()
-    {
-        delete[]str;
-        cout << "DefaultDestructor:\t" << this << endl;
-    }
+    explicit String(int size = 256);
+    String(const char* str);
+    String(const String& other);
+    String(String&& other);
+    ~String();
     //Methods
-    void Print()
-    {
-        cout << "Size: " << size << endl;
-        cout << "Str: " << str << endl;
-    }
-    int get_size() const
-    {
-        return this->size;
-    }
-    char* get_array()
-    {
-        return this->str;
-    }
-
-    const char* get_array()const 
-    {
-        return this->str;
-    }
+    void Print();
+    int get_size() const;
+    char* get_array();
+    const char* get_array()const;
     //Operators;
-    String& operator=(String&& other)
-    {
-        if (this == &other)return*this;
-        delete[]this->str;
-        this->size = other.size;
-        this->str = other.str;
-        other.size = 0;
-        other.str = nullptr;
-        cout << "MoveAssignment:\t" << this << endl;
-
-
-    }
-    String& operator = (const String& other)
-    {
-        if (this == &other)return *this;
-        delete[]this->str;
-        this->size = other.size;
-        this->str = new char[this->size];
-        for (int i = 0; i < this->size; i++) this->str[i] = other.str[i];
-        return *this;
-    }
-    char& operator[](int i)const
-    {
-        return str[i];
-    }
+    String& operator=(String&& other);
+    String& operator =(const String& other);
+    char& operator[](int i)const;
    
 };
+String::String(int size) :size(size), str(new char[size] {})
+{
+    //this->size = size;
+    //this->str = new char[size] {};
+    cout << "Default1ArgConstructor:\t" << this << endl;
+}
+String::String(const char* str) :String(strlen(str) + 1)
+{
+    /*this->size = strlen(str)+1;
+    this->str = new char[size] {};*/
+    for (int i = 0; i < size; i++)this->str[i] = str[i];
+    cout << "Default1ArgConstructor1:\t" << this << endl;
+}
+String::String(const String& other) :String(other.str)
+{
+    //deep copy
+    /*this->size = other.size;
+    this->str = new char [size]{};*/
+    //for (int i = 0; i < this->size; i++) this->str[i] = other.str[i];
+    cout << "CopyConstructor:\t" << this << endl;
+}
+String::String(String&& other)
+{
+    //shalow copy
+    this->size = other.size;
+    this->str = other.str;
+    other.size = NULL;
+    other.str = nullptr;
+    cout << "MoveConstructor:\t" << this << endl;
+
+}
+
+String::~String()
+{
+    delete[]str;
+    cout << "DefaultDestructor:\t" << this << endl;
+}
+int String:: get_size() const
+{
+    return this->size;
+}
+char* String::get_array()
+{
+    return this->str;
+}
+
+const char* String::get_array()const
+{
+    return this->str;
+}
+//Operators;
+String& String::operator=(String&& other)
+{
+    if (this == &other)return*this;
+    delete[]this->str;
+    this->size = other.size;
+    this->str = other.str;
+    other.size = 0;
+    other.str = nullptr;
+    cout << "MoveAssignment:\t" << this << endl;
+
+
+}
+String& String::operator = (const String& other)
+{
+    if (this == &other)return *this;
+    delete[]this->str;
+    this->size = other.size;
+    this->str = new char[this->size];
+    for (int i = 0; i < this->size; i++) this->str[i] = other.str[i];
+    return *this;
+}
+char& String::operator[](int i)const
+{
+    return str[i];
+}
 String operator+(const String& left,const String& right)
 {
     String cat (left.get_size() + right.get_size() - 1);
@@ -113,7 +121,7 @@ std::ostream& operator<<(std::ostream& os, String& obj)
 }
 std::istream& operator>>(std::istream& is, String& obj)
 {
-    const int SIZE = 1024000;
+    const int SIZE = 102400;
     char buffer[SIZE] = {};
     is>>buffer;
     obj=buffer;
