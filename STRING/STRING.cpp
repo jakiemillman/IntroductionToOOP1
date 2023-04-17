@@ -1,42 +1,9 @@
-﻿// STRING.cpp 
-
-#include <iostream>
-#include <Windows.h>
-using namespace std;
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-/// Class decloration - объявление класса
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class String
-{
-    char* str; //размер символов;
-    int size; //размер строки
-public:
-    //Constructors
-    explicit String(int size = 256);
-    String(const char* str);
-    String(const String& other);
-    String(String&& other);
-    ~String();
-    //Methods
-    void Print();
-    int get_size() const;
-    char* get_array();
-    const char* get_array()const;
-    //Operators;
-    String& operator=(String&& other);
-    String& operator =(const String& other);
-    char& operator[](int i)const;
-   
-};
-///////////////////////////////////////////////////////////////////////////////////////////////////
-/// Class decloration end - конец объявления класса
-///////////////////////////////////////////////////////////////////////////////////////////////////
+// STRING.cpp 
+#include "String.h"
 
 //--------------------------------------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-/// Class defenition - определение класса
+/// Class defenition - ����������� ������
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 String::String(int size) :size(size), str(new char[size] {})
 {
@@ -67,7 +34,6 @@ String::String(String&& other)
     other.size = NULL;
     other.str = nullptr;
     cout << "MoveConstructor:\t" << this << endl;
-
 }
 
 String::~String()
@@ -75,7 +41,7 @@ String::~String()
     delete[]str;
     cout << "DefaultDestructor:\t" << this << endl;
 }
-int String:: get_size() const
+int String::get_size() const
 {
     return this->size;
 }
@@ -89,7 +55,7 @@ const char* String::get_array()const
     return this->str;
 }
 //Operators;
-String& String::operator=(String&& other)
+String& String::operator=(String&& other)noexcept
 {
     if (this == &other)return*this;
     delete[]this->str;
@@ -101,7 +67,7 @@ String& String::operator=(String&& other)
 
 
 }
-String& String::operator = (const String& other)
+String& String::operator=(const String& other)noexcept
 {
     if (this == &other)return *this;
     delete[]this->str;
@@ -110,22 +76,27 @@ String& String::operator = (const String& other)
     for (int i = 0; i < this->size; i++) this->str[i] = other.str[i];
     return *this;
 }
-char& String::operator[](int i)const
+const char& String::operator[](int i)const
 {
     return str[i];
 }
-String operator+(const String& left,const String& right)
+char& String::operator[](int i)
 {
-    String cat (left.get_size() + right.get_size() - 1);
+    return str[i];
+}
+
+String operator+(const String& left, const String& right)
+{
+    String cat(left.get_size() + right.get_size() - 1);
     for (int i = 0, j = 0; i < cat.get_size(); i++)
     {
-        if (i < left[i]/*.get_size()-1*/)cat[i] = left/*.get_array()*/[i];
-        else cat[i] = right/*get_array()*/[j++];
+        if (i < left.get_size()-1)cat[i] = left[i];
+        else cat[i] = right[j++];
     }
     /*strcat(left.get_array(), right.get_array());*/
     return cat;
 }
-std::ostream& operator<<(std::ostream& os, String& obj)
+std::ostream& operator<<(std::ostream& os, const String& obj)
 {
     os << obj.get_array();
     return os;
@@ -134,38 +105,10 @@ std::istream& operator>>(std::istream& is, String& obj)
 {
     const int SIZE = 102400;
     char buffer[SIZE] = {};
-    is>>buffer;
-    obj=buffer;
+    is >> buffer;
+    obj = buffer;
     return is;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-/// Class defenition end - конец определения класса
+/// Class defenition end - ����� ����������� ������
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//#define CONSTRUCTORS_CHECK
-#define HOME_WORK
-int main()
-{
-    setlocale(LC_ALL,"rus");
-#ifdef CONSTRUCTORS_CHECK
-    String str1;
-    str1.Print();
-    String str2(16);//explicit constructor невозможно вызвать оператором присвоить, его можно вызвать только так;
-    str2.Print();
-    String str3="Hello";
-#endif // 
-#ifdef HOME_WORK
-    String str1="Hello ";
-    String str2="world";
-   /* String str3 = str1 + str2;
-    str3.Print();
-    str1 = str2 + str3;
-    cout << str1 << "+ " << str2 << " = " << str3 << endl;
-    String str4;*/
-    cout << "Введите строку: "; cin >> str1;
-    cout << str1;
-    cout << endl;
-
-
-#endif
-}
-
